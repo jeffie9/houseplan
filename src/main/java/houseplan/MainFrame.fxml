@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="houseplan.MainFrameController">
+   <children>
+      <MenuBar>
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#onFileClose" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <ToolBar prefHeight="40.0" prefWidth="200.0">
+        <items>
+          <Button mnemonicParsing="false" onAction="#onPickTool" text="Select" />
+            <Button mnemonicParsing="false" onAction="#onPickTool" text="Box Select" />
+            <Button mnemonicParsing="false" onAction="#onPickTool" text="Wall" />
+        </items>
+      </ToolBar>
+      <SplitPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+         <items>
+            <ScrollPane>
+              <content>
+                <AnchorPane fx:id="draftTable" minHeight="0.0" minWidth="0.0" prefHeight="2000.0" prefWidth="2000.0">
+                     <children>
+                        <Canvas fx:id="userInputCanvas" height="1000.0" onMouseClicked="#onCanvasMouseEvent" onMouseDragged="#onCanvasMouseEvent" onMouseEntered="#onCanvasMouseEvent" onMouseExited="#onCanvasMouseEvent" onMouseMoved="#onCanvasMouseEvent" onMousePressed="#onCanvasMouseEvent" onMouseReleased="#onCanvasMouseEvent" width="1000.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </ScrollPane>
+         </items>
+      </SplitPane>
+      <HBox spacing="5.0" VBox.vgrow="NEVER">
+         <children>
+            <Label maxHeight="1.7976931348623157E308" text="Label" />
+            <Pane HBox.hgrow="ALWAYS" />
+            <Label text="Label" />
+         </children>
+         <padding>
+            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+         </padding>
+      </HBox>
+   </children>
+</VBox>
