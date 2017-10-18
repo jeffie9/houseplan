@@ -9,8 +9,10 @@ import org.springframework.context.ConfigurableApplicationContext;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 @SpringBootApplication
 public class HouseplanMain extends Application {
@@ -34,10 +36,16 @@ public class HouseplanMain extends Application {
 //            System.out.println(beanName);
 //        }
 
-        VBox page = (VBox) FXMLLoader.load(HouseplanMain.class.getResource("MainFrame.fxml"));
-        Scene scene = new Scene(page);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("MainFrame.fxml"));
+        Pane pane = loader.load();
+
+        Scene scene = new Scene(pane);
         primaryStage.setScene(scene);
         primaryStage.setTitle("House Plan");
+
+        MainFrameController controller = loader.<MainFrameController>getController();
+        controller.processArgs(getParameters().getRaw());
+
         primaryStage.show();
 
     }

@@ -1,8 +1,10 @@
 package houseplan;
 
 import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class WallTool extends Tool {
@@ -20,16 +22,23 @@ public class WallTool extends Tool {
         case "MOUSE_CLICKED":
             if (curLine == null) {
                 System.out.println("Start new wall");
+                Point2D snap = snapToGrid(event.getX(), event.getY());
                 curLine = new Line(
-                        event.getX(), event.getY(), 
-                        event.getX(), event.getY()
+                        snap.getX(), snap.getY(),
+                        snap.getX(), snap.getY()
                         );
+                curLine.setStrokeWidth(controller.wallWidth);
+                curLine.setStroke(Color.BLACK);
             } else {
                 System.out.println("Wall complete");
-                drawWall(controller.activeLayer.getGraphicsContext2D());
                 Bounds b = curLine.getBoundsInLocal();
                 gc.clearRect(b.getMinX() - 10, b.getMinY() - 10,
                         b.getMaxX() + 10, b.getMaxY() + 10);
+                Point2D snap = snapToGrid(event.getX(), event.getY());
+                curLine.setEndX(snap.getX());
+                curLine.setEndY(snap.getY());
+                drawWall(controller.activeLayer.getGraphicsContext2D());
+                controller.housePlan.addWall(curLine);
                 curLine = null;
             }
             break;
@@ -49,11 +58,22 @@ public class WallTool extends Tool {
     }
 
     private void drawWall(GraphicsContext gc) {
-        double oldWidth = gc.getLineWidth();
-        gc.setLineWidth(7.0);
+        gc.setLineWidth(curLine.getStrokeWidth());
+        gc.setStroke(curLine.getStroke());
         gc.strokeLine(curLine.getStartX(), curLine.getStartY(),
                 curLine.getEndX(), curLine.getEndY());
-        gc.setLineWidth(oldWidth);
+    }
+
+    private Point2D snapToGrid(double x, double y) {
+        double nx = Math.floor(x / controller.gridWidth) * controller.gridWidth;
+        double ny = Math.floor(y / controller.gridWidth) * controller.gridWidth;
+        double dx = x - nx;
+        double dy = y - ny;
+        double hg = controller.gridWidth / 2.0;
+        if (dx > hg) nx += controller.gridWidth;
+        if (dy > hg) ny += controller.gridWidth;
+        //System.out.println("x: " + x + ", y: " + y + ", dx: " + dx + ", dy: " + dy + ", hg: " + hg + ", nx: " + nx + ", ny: " + ny);
+        return new Point2D(nx, ny);
     }
 
 }
