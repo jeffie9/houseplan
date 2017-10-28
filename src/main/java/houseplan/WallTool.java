@@ -34,7 +34,7 @@ public class WallTool extends Tool {
                 Point2D snap = snapToGrid(event.getX(), event.getY());
                 curLine.setEndX(snap.getX());
                 curLine.setEndY(snap.getY());
-                drawLine(controller.activeLayer.getGraphicsContext2D(), curLine);
+                drawWall(controller.activeLayer.getGraphicsContext2D(), curLine);
                 controller.housePlan.addWall(curLine);
                 curLine = null;
             }
@@ -47,9 +47,21 @@ public class WallTool extends Tool {
             eraseLine(gc, curLine);
             curLine.setEndX(event.getX());
             curLine.setEndY(event.getY());
-            drawLine(gc, curLine);
+            drawWall(gc, curLine);
             break;
         }
+    }
+
+    protected void drawWall(GraphicsContext gc, Line line) {
+        Point2D start = new Point2D(line.getStartX(), line.getStartY());
+        Point2D end = new Point2D(line.getEndX(), line.getEndY());
+        double length = end.distance(start);
+        controller.rightStatusLabel.setText(String.format("%.2f", length));
+
+        gc.setLineWidth(line.getStrokeWidth());
+        gc.setStroke(line.getStroke());
+        gc.strokeLine(line.getStartX(), line.getStartY(),
+                line.getEndX(), line.getEndY());
     }
 
 }

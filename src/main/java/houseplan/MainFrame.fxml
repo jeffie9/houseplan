@@ -55,9 +55,9 @@
       </SplitPane>
       <HBox spacing="5.0" VBox.vgrow="NEVER">
          <children>
-            <Label maxHeight="1.7976931348623157E308" text="Label" />
+            <Label fx:id="leftStatusLabel" maxHeight="1.7976931348623157E308" text="Label" />
             <Pane HBox.hgrow="ALWAYS" />
-            <Label text="Label" />
+            <Label fx:id="rightStatusLabel" text="Label" />
          </children>
          <padding>
             <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />

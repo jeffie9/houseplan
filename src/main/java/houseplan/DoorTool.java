@@ -5,12 +5,14 @@ import javafx.scene.Cursor;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
+import javafx.scene.transform.Transform;
 
-public class WindowTool extends Tool {
+public class DoorTool extends Tool {
 
-    public WindowTool(MainFrameController controller) {
+    public DoorTool(MainFrameController controller) {
         super(controller);
     }
 
@@ -39,7 +41,7 @@ public class WindowTool extends Tool {
                 Point2D pt = closestPointOnWall(event.getX(), event.getY(), curWall);
                 curLine.setEndX(pt.getX());
                 curLine.setEndY(pt.getY());
-                drawWindow(controller.activeLayer.getGraphicsContext2D(), curLine);
+                drawDoor(controller.activeLayer.getGraphicsContext2D(), curLine);
                 curLine = null;
                 curWall = null;
             }
@@ -51,7 +53,7 @@ public class WindowTool extends Tool {
                 Point2D pt = closestPointOnWall(event.getX(), event.getY(), curWall);
                 curLine.setEndX(pt.getX());
                 curLine.setEndY(pt.getY());
-                drawWindow(gc, curLine);
+                drawDoor(gc, curLine);
             } else if (wallHitTest(event.getX(), event.getY()) != null) {
                 controller.userInputCanvas.setCursor(Cursor.CROSSHAIR);
             } else {
@@ -61,21 +63,31 @@ public class WindowTool extends Tool {
         }
     }
 
-    protected void drawWindow(GraphicsContext gc, Line line) {
+    protected void drawDoor(GraphicsContext gc, Line line) {
         Point2D start = new Point2D(line.getStartX(), line.getStartY());
         Point2D end = new Point2D(line.getEndX(), line.getEndY());
         double length = end.distance(start);
+//        double angle = angle(start, end);
         controller.rightStatusLabel.setText(String.format("%.2f", length));
 
-        // simple fixed window
-        gc.setLineWidth(line.getStrokeWidth());
+        gc.setLineWidth(line.getStrokeWidth() + 1.0);
         gc.setStroke(Color.WHITE);
         gc.strokeLine(line.getStartX(), line.getStartY(),
                 line.getEndX(), line.getEndY());
-        gc.setLineWidth(1.0);
+
+        // opening door by angle
+        Point2D pt = Transform.rotate(30.0, line.getStartX(), line.getStartY())
+                .transform(line.getEndX(), line.getEndY());
         gc.setStroke(Color.BLACK);
+        gc.setLineWidth(4.0);
         gc.strokeLine(line.getStartX(), line.getStartY(),
-                line.getEndX(), line.getEndY());
+                pt.getX(), pt.getY());
+
+        // and sweep line
+        gc.setLineWidth(1.0);
+//        gc.strokeArc(start.getX() - doorWidth, start.getY() - doorWidth,
+//                2.0 * doorWidth, 2.0 * doorWidth,
+//                angle, angle - 10.0, ArcType.OPEN);
     }
 
 }

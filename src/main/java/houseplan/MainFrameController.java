@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -21,6 +22,12 @@ public class MainFrameController {
     @FXML
     AnchorPane draftTable;
 
+    @FXML
+    Label leftStatusLabel;
+
+    @FXML
+    Label rightStatusLabel;
+
     private Tool selectedTool;
     Canvas activeLayer;
     HousePlan housePlan;
@@ -30,7 +37,7 @@ public class MainFrameController {
     @FXML
     public void initialize() {
         System.out.println("initialize");
-        selectedTool = new WindowTool(this);
+        selectedTool = new DoorTool(this);
 
         Canvas grid = new Canvas(2000, 2000);
         final GraphicsContext gc = grid.getGraphicsContext2D();
@@ -68,6 +75,9 @@ public class MainFrameController {
             break;
         case "Window":
             selectedTool = new WindowTool(this);
+            break;
+        case "Door":
+            selectedTool = new DoorTool(this);
             break;
         }
     }

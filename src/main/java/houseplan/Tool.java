@@ -71,11 +71,11 @@ public abstract class Tool {
         }
     }
 
-    protected void drawLine(GraphicsContext gc, Line line) {
-        gc.setLineWidth(line.getStrokeWidth());
-        gc.setStroke(line.getStroke());
-        gc.strokeLine(line.getStartX(), line.getStartY(),
-                line.getEndX(), line.getEndY());
+    public double angle(Point2D start, Point2D end) {
+        double dx = end.getX() - start.getX();
+        double dy = start.getY() - end.getY();  // y reversed in screen coordinates
+        return Math.toDegrees(Math.atan2(dy, dx));
     }
+
 
 }
