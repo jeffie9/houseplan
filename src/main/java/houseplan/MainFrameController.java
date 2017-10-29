@@ -43,8 +43,8 @@ public class MainFrameController {
         final GraphicsContext gc = grid.getGraphicsContext2D();
         final double oldWidth = gc.getLineWidth();
         final Paint oldStroke = gc.getStroke();
-        gc.setLineWidth(0.5);
-        gc.setStroke(Color.GREY);
+        gc.setLineWidth(0.0);
+        gc.setStroke(Color.LIGHTGREY);
         for (double g = gridWidth; g < grid.getWidth(); g += gridWidth) {
             gc.strokeLine(g, 0.0, g, grid.getHeight());
             gc.strokeLine(0.0, g, grid.getWidth(), g);
@@ -78,6 +78,9 @@ public class MainFrameController {
             break;
         case "Door":
             selectedTool = new DoorTool(this);
+            break;
+        case "Dimension":
+            selectedTool = new DimensionTool(this);
             break;
         }
     }

@@ -35,6 +35,7 @@
             <Button mnemonicParsing="false" onAction="#onPickTool" text="Wall" />
             <Button mnemonicParsing="false" onAction="#onPickTool" text="Window" />
             <Button mnemonicParsing="false" onAction="#onPickTool" text="Door" />
+            <Button mnemonicParsing="false" onAction="#onPickTool" text="Dimension" />
         </items>
       </ToolBar>
       <SplitPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">

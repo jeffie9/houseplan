@@ -77,5 +77,9 @@ public abstract class Tool {
         return Math.toDegrees(Math.atan2(dy, dx));
     }
 
-
+    protected void clearInputLayer() {
+        GraphicsContext gc = controller.userInputCanvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, controller.userInputCanvas.getWidth(),
+                controller.userInputCanvas.getHeight());
+    }
 }

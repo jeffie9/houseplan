@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
+import javafx.scene.transform.Affine;
 import javafx.scene.transform.Transform;
 
 public class DoorTool extends Tool {
@@ -37,7 +38,7 @@ public class DoorTool extends Tool {
                 }
             } else {
                 System.out.println("Window complete");
-                eraseLine(gc, curLine);
+                clearInputLayer();
                 Point2D pt = closestPointOnWall(event.getX(), event.getY(), curWall);
                 curLine.setEndX(pt.getX());
                 curLine.setEndY(pt.getY());
@@ -49,7 +50,7 @@ public class DoorTool extends Tool {
         case "MOUSE_MOVED":
             if (curLine != null) {
                 controller.userInputCanvas.setCursor(Cursor.CROSSHAIR);
-                eraseLine(gc, curLine);
+                clearInputLayer();
                 Point2D pt = closestPointOnWall(event.getX(), event.getY(), curWall);
                 curLine.setEndX(pt.getX());
                 curLine.setEndY(pt.getY());
@@ -64,30 +65,33 @@ public class DoorTool extends Tool {
     }
 
     protected void drawDoor(GraphicsContext gc, Line line) {
-        Point2D start = new Point2D(line.getStartX(), line.getStartY());
-        Point2D end = new Point2D(line.getEndX(), line.getEndY());
-        double length = end.distance(start);
-//        double angle = angle(start, end);
-        controller.rightStatusLabel.setText(String.format("%.2f", length));
+        double dx = line.getEndX() - line.getStartX(), dy = line.getEndY() - line.getStartY();
+        double angle = Math.atan2(dy, dx);
+        double len = Math.sqrt(dx * dx + dy * dy);
+        controller.rightStatusLabel.setText(String.format("%.2f", len));
 
+        Transform transform = Transform.translate(line.getStartX(), line.getStartY());
+        transform = transform.createConcatenation(Transform.rotate(Math.toDegrees(angle), 0, 0));
+        Affine oldTransform = gc.getTransform();
+        gc.setTransform(new Affine(transform));
+
+        // door threshold
         gc.setLineWidth(line.getStrokeWidth() + 1.0);
         gc.setStroke(Color.WHITE);
-        gc.strokeLine(line.getStartX(), line.getStartY(),
-                line.getEndX(), line.getEndY());
+        gc.strokeLine(0, 0, len, 0);
 
-        // opening door by angle
-        Point2D pt = Transform.rotate(30.0, line.getStartX(), line.getStartY())
-                .transform(line.getEndX(), line.getEndY());
+        // sweep line
         gc.setStroke(Color.BLACK);
-        gc.setLineWidth(4.0);
-        gc.strokeLine(line.getStartX(), line.getStartY(),
-                pt.getX(), pt.getY());
-
-        // and sweep line
         gc.setLineWidth(1.0);
-//        gc.strokeArc(start.getX() - doorWidth, start.getY() - doorWidth,
-//                2.0 * doorWidth, 2.0 * doorWidth,
-//                angle, angle - 10.0, ArcType.OPEN);
+        gc.strokeArc(-len, -len, len * 2.0, len * 2.0, 0, -90.0, ArcType.OPEN);
+
+        // opened door
+        transform = transform.createConcatenation(Transform.rotate(60.0, 0, 0));
+        gc.setTransform(new Affine(transform));
+        gc.setLineWidth(4.0);
+        gc.strokeLine(0, 0, len, 0);
+
+        gc.setTransform(oldTransform);
     }
 
 }
