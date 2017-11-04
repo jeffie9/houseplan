@@ -32,6 +32,7 @@ public class WindowTool extends Tool {
                             );
                     curLine.setStrokeWidth(controller.wallWidth);
                     curLine.setStroke(Color.LIGHTYELLOW);
+                    curLine.setUserData("window");
                 }
             } else {
                 System.out.println("Window complete");
@@ -40,6 +41,7 @@ public class WindowTool extends Tool {
                 curLine.setEndX(pt.getX());
                 curLine.setEndY(pt.getY());
                 drawWindow(controller.activeLayer.getGraphicsContext2D(), curLine);
+                controller.housePlan.addWindow(curLine);
                 curLine = null;
                 curWall = null;
             }

@@ -35,6 +35,7 @@ public class DoorTool extends Tool {
                             );
                     curLine.setStrokeWidth(controller.wallWidth);
                     curLine.setStroke(Color.LIGHTYELLOW);
+                    curLine.setUserData("door");
                 }
             } else {
                 System.out.println("Window complete");
@@ -43,6 +44,7 @@ public class DoorTool extends Tool {
                 curLine.setEndX(pt.getX());
                 curLine.setEndY(pt.getY());
                 drawDoor(controller.activeLayer.getGraphicsContext2D(), curLine);
+                controller.housePlan.addDoor(curLine);
                 curLine = null;
                 curWall = null;
             }

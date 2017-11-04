@@ -37,7 +37,7 @@ public class MainFrameController {
     @FXML
     public void initialize() {
         System.out.println("initialize");
-        selectedTool = new DoorTool(this);
+        selectedTool = new SelectTool(this);
 
         Canvas grid = new Canvas(2000, 2000);
         final GraphicsContext gc = grid.getGraphicsContext2D();
@@ -70,6 +70,9 @@ public class MainFrameController {
         Button source = Button.class.cast(event.getSource());
         System.out.println(source.getText());
         switch (source.getText()) {
+        case "Select":
+            selectedTool = new SelectTool(this);
+            break;
         case "Wall":
             selectedTool = new WallTool(this);
             break;
@@ -82,6 +85,9 @@ public class MainFrameController {
         case "Dimension":
             selectedTool = new DimensionTool(this);
             break;
+        case "PolyLine":
+            selectedTool = new PolyLineTool(this);
+            break;
         }
     }
 
@@ -93,13 +99,13 @@ public class MainFrameController {
         System.out.println("processArgs " + args);
         housePlan = new HousePlan();
         // TODO last arg is file to load as plan
-        Line l = new Line(50.0, 50.0, 250.0, 50.0);
+        Line l = new Line(50.0, 50.0, 550.0, 50.0);
         l.setStrokeWidth(wallWidth);
         housePlan.addWall(l);
-        l = new Line(250.0, 50.0, 250.0, 250.0);
+        l = new Line(550.0, 50.0, 550.0, 250.0);
         l.setStrokeWidth(wallWidth);
         housePlan.addWall(l);
-        l = new Line(250.0, 250.0, 50.0, 250.0);
+        l = new Line(550.0, 250.0, 50.0, 250.0);
         l.setStrokeWidth(wallWidth);
         housePlan.addWall(l);
         l = new Line(50.0, 250.0, 50.0, 50.0);

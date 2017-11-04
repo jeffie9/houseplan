@@ -28,6 +28,7 @@ public class WallTool extends Tool {
                         );
                 curLine.setStrokeWidth(controller.wallWidth);
                 curLine.setStroke(Color.BLACK);
+                curLine.setUserData("wall");
             } else {
                 System.out.println("Wall complete");
                 eraseLine(gc, curLine);
